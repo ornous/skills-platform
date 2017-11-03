@@ -56,6 +56,8 @@ resources:
 - name: skills-pipelines
   type: concourse-pipeline
   source:
+    target: {{concourse-url}}
+    insecure: "false"
     teams:
     - name: main
       username: {{concourse-username}}
@@ -77,3 +79,7 @@ resource_types:
   type: docker-image
   source:
     repository: jakedsouza/gitlab-merge-request-resource
+- name: concourse-pipeline
+  type: docker-image
+  source:
+    repository: concourse/concourse-pipeline-resource
