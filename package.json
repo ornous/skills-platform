@@ -1,6 +1,6 @@
 {
   "name": "skills-platform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Skills Platform",
   "main": "index.js",
   "repository": "git@gitlab.com:ornous/skills/platform.git",
