@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+OVERRIDE_CLUSTER_NAME=${CLUSTER_NAME}
+set -u -a
+. ./.env
+set +a
+
+CLUSTER_NAME=${OVERRIDE_CLUSTER_NAME:-$CLUSTER_NAME}
+enable_alpha_features=""
+machine_type="n1-standard-1"
+
+if [ ${ALPHA_CLUSTER} = true ]; then
+  enable_alpha_features="--enable-kubernetes-alpha"
+fi
+
+gcloud container clusters delete "${CLUSTER_NAME}"
+#    --cluster-version="${KUBERNETES_VERSION}" \
+#    ${enable_alpha_features} \
+    # --machine-type="${machine_type}" \
+    # --num-nodes="${CLUSTER_SIZE}" \
+    # --no-enable-legacy-authorization \
+    # --zone="${CLUSTER_ZONE}"

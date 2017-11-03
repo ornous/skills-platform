@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# minikube dashboard
+
+kubectl apply -f busybox.yaml
+
+istioKubeNS="default"
+kubectl create namespace "${istioKubeNS:?}"
+kubectl apply -n "${istioKubeNS:?}" -f istio/istio.yaml
+kubectl apply -n "${istioKubeNS:?}" -f istio/istio-rbac-beta.yaml
+kubectl apply -n "${istioKubeNS:?}" -f istio/addons/grafana.yaml
+kubectl apply -n "${istioKubeNS:?}" -f istio/addons/prometheus.yaml
+kubectl apply -n "${istioKubeNS:?}" -f istio/addons/servicegraph.yaml
+kubectl apply -n "${istioKubeNS:?}" -f istio/addons/zipkin.yaml
+
+postgresqlKubeNS="default"
+kubectl create namespace "${postgresqlKubeNS:?}"
+kubectl apply -n "${postgresqlKubeNS:?}" -f postgresql/deployment.yaml
+kubectl apply -n "${postgresqlKubeNS:?}" -f postgresql/svc.yaml
+kubectl apply -n "${postgresqlKubeNS:?}" -f postgresql/secrets.yaml
+kubectl apply -n "${postgresqlKubeNS:?}" -f postgresql/pvc.yaml

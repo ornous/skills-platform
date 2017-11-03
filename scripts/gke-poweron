@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+OVERRIDE_CLUSTER_NAME=${CLUSTER_NAME}
+set -u -a
+. ./.env
+set +a
+
+CLUSTER_NAME=${OVERRIDE_CLUSTER_NAME:-$CLUSTER_NAME}
+
+./scripts/gke-resize-cluster

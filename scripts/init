@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e -u
+
+# Get Kubectl
+KUBERNETES_VERSION=1.8.2
+curl -L -o /usr/local/bin/kubectl \
+    https://storage.googleapis.com/kubernetes-release/release/v${KUBERNETES_VERSION}/bin/linux/amd64/kubectl; \
+    chmod +x /usr/local/bin/kubectl
+
+kubectl cluster-info
+kubectl version
+
+# Get Istioctl
+curl -L https://git.io/getLatestIstio | sh -
+sed -i ~/.zshrc -e '/export PATH="\$PATH:.*istio\/istio-.*\/bin/d'
+istio_dir=$(find $(pwd) -maxdepth 1 -name istio-\* -type d)
+echo 'export PATH="$PATH:'${istio_dir}'/bin"' >> ~/.zshrc
+
+# Get helm
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+chmod 0700 ./get_helm.sh
+./get_helm.sh
+rm get_helm.sh
+rm -Rf ./istio-*.*.*
+helm init -c
+helm version

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e -u
+
+gcloud container clusters resize "${CLUSTER_NAME}" --zone="${CLUSTER_ZONE:-'europe-west3-a'}" --size="${CLUSTER_SIZE}"

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+OVERRIDE_CONCOURSE_EXTERNAL_URL=${CONCOURSE_EXTERNAL_URL}
+set -u -a
+. ./.env
+set +a
+
+export CONCOURSE_EXTERNAL_URL=${OVERRIDE_CONCOURSE_EXTERNAL_URL:-$CONCOURSE_EXTERNAL_URL}
+keys_dir="./legacy/data/concourse/keys"
+
+rm -Rf "${keys_dir}"
+
+fly -t local logout
+docker-compose -f ./legacy/concourse/docker-compose.yml down --rmi all --volumes
