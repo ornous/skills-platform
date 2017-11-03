@@ -1,0 +1,13 @@
+{
+  "name": "skills-platform",
+  "version": "1.0.1",
+  "description": "Skills Platform",
+  "main": "index.js",
+  "repository": "git@gitlab.com:ornous/skills/platform.git",
+  "author": "Ousmane Ndiaye <snekshaark@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "changelog": "./scripts/generate-changelog"
+  }
+}
