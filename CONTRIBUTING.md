@@ -3,7 +3,6 @@
 The Skills Api project welcomes contributions via GitLab merge requests.<br>
 This document outlines the process to help get your contribution accepted.
 
-
 #### Merge approval and release process
 
 The client side git hooks and Concourse Pipeline will provide you with feedback about the ongoing validity of your merge request.<br>
