@@ -4,7 +4,7 @@ services:
   concourse-db:
     image: postgres:9.5
     volumes:
-      - /home/ornous/projects/skills/platform/legacy/data/concourse/postgresql:/database
+      - /var/lib/data/skills/concourse/postgresql:/database
     restart: unless-stopped
     environment:
       POSTGRES_DB: concourse
@@ -19,7 +19,7 @@ services:
     depends_on: [concourse-db]
     ports: ["8080:8080"]
     volumes:
-      - /home/ornous/projects/skills/platform/legacy/data/concourse/keys/web:/concourse-keys
+      - /var/lib/data/skills/concourse/keys/web:/concourse-keys
     restart: unless-stopped
     environment:
       CONCOURSE_BASIC_AUTH_USERNAME: concourse
@@ -38,6 +38,6 @@ services:
     depends_on: [concourse-web]
     command: worker
     volumes:
-      - /home/ornous/projects/skills/platform/legacy/data/concourse/keys/worker:/concourse-keys
+      - /var/lib/data/skills/concourse/keys/worker:/concourse-keys
     environment:
       CONCOURSE_TSA_HOST: concourse-web

@@ -7,9 +7,10 @@ set -u -a
 set +a
 
 export CONCOURSE_EXTERNAL_URL=${OVERRIDE_CONCOURSE_EXTERNAL_URL:-$CONCOURSE_EXTERNAL_URL}
-keys_dir="./legacy/data/concourse/keys"
+sudo chown -R "$(whoami)"."$(whoami)" "/var/lib/data/skills"
+keys_dir="/var/lib/data/skills/concourse/keys"
 
-rm -Rf "${keys_dir}"
+rm -Rf "${keys_dir}/"{web,worker}"/*"
 mkdir -p "${keys_dir}/web" "${keys_dir}/worker"
 ssh-keygen -t "rsa" -f "${keys_dir}/web/tsa_host_key" -N ""
 ssh-keygen -t "rsa" -f "${keys_dir}/web/session_signing_key" -N ""
