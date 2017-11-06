@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e -u
+
+fly -t "ci" sp -nc "ci/pipeline.yml" -p "skills-platform" \
+  -l "ci/settings.yml" \
+  -l "secrets/credentials.yml"

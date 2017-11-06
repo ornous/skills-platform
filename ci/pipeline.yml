@@ -4,53 +4,72 @@ jobs:
   serial: true
   plan:
   - aggregate:
-    - { get: skills, trigger: true }
     - { get: skills-api, trigger: true }
-  - put: skills-pipelines
+    - { get: skills-platform, trigger: true }
+    - { get: skills-web, trigger: true }
+  - put: skills-api-pipeline
+    resource: skills-pipelines
     params:
       pipelines:
       - name: skills-api
         team: main
         config_file: skills-api/ci/pipeline.yml
         vars_files:
-        - skills/ci/settings.yml
+        - skills-platform/ci/settings.yml
         - skills-api/ci/settings.yml
-        - skills/secrets/credentials.yml
+        - skills-platform/secrets/credentials.yml
+  - put: skills-web-pipeline
+    resource: skills-pipelines
+    params:
+      pipelines:
+      - name: skills-web
+        team: main
+        config_file: skills-web/ci/pipeline.yml
+        vars_files:
+        - skills-platform/ci/settings.yml
+        - skills-web/ci/settings.yml
+        - skills-platform/secrets/credentials.yml
 - name: test
   public: true
   serial: true
   plan:
-  - get: repo
+  - get: skills-api
     resource: merge-requests
     trigger: true
   - put: merge-requests
     params:
-      repository: skills
+      repository: skills-platform
       status: running
   - task: run-tests
-    file: repo/ci/tasks/run-tests.yml
+    file: skills-api/ci/tasks/run-tests.yml
   on_failure:
     put: merge-requests
     params:
-      repository: skills
+      repository: skills-platform
       status: failed
   on_success:
     put: merge-requests
     params:
-      repository: skills
+      repository: skills-platform
       status: success
 
 resources:
-- name: skills
+- name: skills-platform
   type: git
   source:
-    uri: {{repo}}
+    uri: {{skills-platform-repo}}
     branch: master
     private_key: {{gitlab-private-key}}
 - name: skills-api
   type: git
   source:
     uri: {{skills-api-repo}}
+    branch: master
+    private_key: {{gitlab-private-key}}
+- name: skills-web
+  type: git
+  source:
+    uri: {{skills-web-repo}}
     branch: master
     private_key: {{gitlab-private-key}}
 - name: skills-pipelines
@@ -65,7 +84,7 @@ resources:
 - name: merge-requests
   type: merge-request
   source:
-    uri: {{repo}}
+    uri: {{skills-platform-repo}}
     private_key: {{gitlab-private-key}}
     private_token: {{gitlab-private-token}}
 
